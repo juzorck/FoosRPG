@@ -1,0 +1,1731 @@
+================================================================================
+                    FoosRPG — ПОЛНОЕ ТЕХНИЧЕСКОЕ ЗАДАНИЕ
+================================================================================
+Версия документа: 1.0
+Формат продукта: Progressive Web App (PWA)
+Название: FoosRPG
+Слоган: «Прокачай себя за столом.»
+================================================================================
+
+
+================================================================================
+СОДЕРЖАНИЕ
+================================================================================
+1.  Концепция и видение
+2.  Целевая аудитория и сценарии
+3.  Функциональные требования
+4.  UX/UI и дизайн-система
+5.  Экраны приложения (детально)
+6.  Игровые системы
+7.  Техническая архитектура
+8.  Схема базы данных
+9.  API-контракты
+10. PWA-требования
+11. Безопасность и анти-чит
+12. Аналитика и метрики
+13. Монетизация
+14. Roadmap и приоритеты
+15. Definition of Done
+16. Готовый промпт для агента
+Приложения A–E
+
+
+================================================================================
+1. КОНЦЕПЦИЯ И ВИДЕНИЕ
+================================================================================
+
+1.1. Что такое FoosRPG
+
+FoosRPG — прогрессивное веб-приложение (PWA) для любителей и профессионалов
+настольного футбола (кикера). Это не просто трекер матчей, а RPG-платформа,
+где игрок прокачивает персонажа, участвует в рейтинговых боях, турнирах-рейдах
+и тренировках-квестах.
+
+Ключевая метафора: кикер = RPG. Ты — персонаж. Матчи — битвы. Турниры — рейды.
+Тренировки — прокачка скиллов. Academy — древо талантов.
+
+1.2. Ценностное предложение
+
+- Для новичков: понятный путь от нуля до уверенного игрока через древо
+  талантов и ежедневные квесты.
+- Для любителей: рейтинг, дивизионы, сезоны, комьюнити, турниры.
+- Для про: турнирная система, аналитика, шаринг результатов, статус.
+- Для всех: установка в один тап, работает оффлайн, не нужно скачивать
+  из сторов.
+
+1.3. Уникальные преимущества (USP)
+
+1. RPG-метафора — первое такое приложение в нише кикера.
+2. PWA — установка без App Store / Google Play.
+3. ELO + дивизионы + сезоны — киберспортивная составляющая.
+4. Древо талантов — визуальный прогресс.
+5. Тренировки с наградами — мотивация через стрики, XP, сундуки.
+6. Турниры с пересчётом рейтинга.
+7. Социальная лента, клубы, челленджи.
+8. Battle Pass и косметика без pay-to-win.
+
+1.4. Ключевые метрики успеха
+
+- DAU/MAU >= 25%.
+- Retention D1 >= 40%, D7 >= 20%, D30 >= 10%.
+- Средний стрик >= 5 дней.
+- Матчей на пользователя в неделю >= 3.
+- Установок PWA >= 60% от активных пользователей.
+- Lighthouse PWA score >= 95.
+
+
+================================================================================
+2. ЦЕЛЕВАЯ АУДИТОРИЯ И СЦЕНАРИИ
+================================================================================
+
+2.1. Персоны
+
+Персона 1: Алекс, 24, офисный работник
+- Играет в кикер в офисе с коллегами.
+- Хочет расти, но не знает, как.
+- Сценарий: открывает FoosRPG в обед, проходит Daily Challenge, играет
+  товарищеский матч, вечером смотрит урок в Academy.
+
+Персона 2: Марина, 31, капитан любительской команды
+- Играет в барах, участвует в локальных турнирах.
+- Хочет видеть статистику, организовывать турниры.
+- Сценарий: создаёт турнир в FoosRPG, приглашает команды, после турнира
+  смотрит recap и шарит карточку.
+
+Персона 3: Дмитрий, 38, полупро
+- Участвует в региональных соревнованиях.
+- Хочет следить за рейтингом, анализировать слабые зоны.
+- Сценарий: после каждого матча смотрит Foos DNA, тренирует слабые навыки,
+  участвует в сезонной лиге.
+
+2.2. Ключевые сценарии использования
+
+1. Быстрый вход: открыл PWA -> залогинился -> увидел Trick of the Day ->
+   прошёл Daily Challenge.
+2. Матч: выбрал тип матча -> нашёл соперника -> сыграл -> получил ELO
+   и награды -> шарит карточку.
+3. Турнир: создал турнир -> пригласил игроков -> жеребьёвка -> матчи ->
+   финал -> пересчёт рейтинга.
+4. Тренировка: открыл план -> выполнил drill -> отметил -> получил XP
+   и монеты -> поддержал стрик.
+5. Обучение: открыл древо талантов -> выбрал трюк -> посмотрел видео ->
+   отметил «освоено» -> разблокировал следующий.
+
+
+================================================================================
+3. ФУНКЦИОНАЛЬНЫЕ ТРЕБОВАНИЯ
+================================================================================
+
+3.1. Модуль «Аутентификация и онбординг»
+
+- Регистрация: email + пароль, Google OAuth, Apple OAuth.
+- Восстановление пароля через email.
+- Онбординг (первый вход):
+  - Выбор ника, аватара.
+  - Выбор класса персонажа (Striker / Guardian / Playmaker / Trickster /
+    Tactician) — с описанием и иконкой.
+  - Выбор уровня: новичок / любитель / продвинутый / про.
+  - Выбор целей: «научиться базовым движениям», «прокачать рейтинг»,
+    «участвовать в турнирах».
+  - Выбор позиции: вратарь / защитник / нападающий / универсал.
+  - Инструкция по установке PWA (для iOS — «Поделиться -> На экран Домой»,
+    для Android — install-баннер).
+- Гость (можно попробовать без регистрации, но без сохранения прогресса).
+
+3.2. Модуль «Профиль персонажа»
+
+- Аватар (генеративный или загружаемый, кроп в кружок).
+- Ник, страна/город, био.
+- Класс персонажа + иконка + описание.
+- Уровень персонажа (XP-бар, шкала до следующего уровня).
+- ELO-рейтинг + дивизион (Bronze -> Silver -> Gold -> Platinum -> Diamond ->
+  Master -> Legend).
+- Карта навыков (radar chart): пас, удар, защита, контроль, трюки,
+  позиционирование.
+- Экипировка: рамка аватара, скин стола, мяч, празднование гола, титул.
+- Инвентарь: Foos Coins, сундуки, бусты, билеты на турниры.
+- Достижения (сетка бейджей, locked/unlocked).
+- Квесты (daily / weekly).
+- Heatmap активности (как GitHub).
+- История матчей с фильтрами (рейтинговые / товарищеские / турнирные /
+  тренировочные).
+- Foos DNA — авто-генерируемый стиль (текст + иконка).
+- Кнопки: «Поделиться профилем», «Настройки», «Выйти».
+
+3.3. Модуль «Матчи»
+
+Типы матчей:
+- Рейтинговый (ELO).
+- Товарищеский (без ELO).
+- Приватный (по коду/ссылке).
+- Турнирный (внутри турнира).
+- Тренировочный (с ботом).
+
+Форматы:
+- 1v1, 2v2.
+- До 5 / 7 / 10 голов.
+- Best of 3 / 5.
+
+Логика матча:
+- Лобби: выбор типа, формата, ставки (опционально).
+- Matchmaking: подбор по ELO (+-200), региону, формату.
+- Экран матча: счёт, таймер, лог событий (гол, ассист, ошибка).
+- Ручной ввод счёта (поскольку это кикер — матчи офлайн, приложение
+  фиксирует результат).
+- Подтверждение результата обоими игроками (или только инициатором,
+  если соперник не зарегистрирован).
+
+После матча:
+- Match Recap: счёт, статистика, изменение ELO.
+- Награды: XP, Foos Coins, шанс дропа предмета.
+- Кнопки: «Реванш», «Добавить в друзья», «Поделиться карточкой».
+
+3.4. Модуль «Турниры»
+
+Форматы:
+- Single Elimination.
+- Double Elimination.
+- Round Robin.
+- Swiss.
+- Сезонная лига.
+
+Создание турнира:
+- Название, описание, обложка.
+- Приватный / публичный.
+- Формат, число игроков (4/8/16/32).
+- Взнос Foos Coins -> призовой фонд.
+- Рейтинговые ограничения (например, только Silver+).
+- Регион, дата/время.
+- Авто-жеребьёвка.
+- Расписание матчей.
+
+Проведение:
+- Сетка (визуально — tree для elimination, таблица для round robin).
+- Обновление результатов в реальном времени.
+- Уведомления игрокам.
+
+После турнира:
+- Пересчёт ELO по каждой игре + бонус за место (x1.2 за 1-е место).
+- Отдельный Tournament Rating.
+- Награды: титул, рамка, бейдж, монеты, эксклюзивный скин.
+- MVP турнира по статистике.
+- Турнирный дневник (авто-карточка для шаринга).
+
+3.5. Модуль «Тренировки»
+
+Типы:
+1. Drill-сессии (упражнения: пас в стену 50 раз, удары, трюки).
+2. Solo Challenge («10 голов за 3 минуты»).
+3. Shadow Match (против бота с подсказками).
+4. Partner Session (совместная с другом).
+5. Daily Challenge (задание дня).
+
+Механика:
+- Streak-система (7/30/100 дней -> множители XP).
+- XP и уровни персонажа.
+- Foos Coins за тренировки.
+- Сундуки (random reward) за недельный план.
+- Персональный план на основе слабых зон карты навыков.
+- Челленджи от друзей.
+- Достижения за упорство.
+
+Верификация:
+- Ручная отметка (honor-system).
+- Фото/видео по желанию.
+- Видео-верификация для ачивок.
+- Оффлайн-режим: тренировки сохраняются в IndexedDB, синк при возврате
+  в сеть.
+
+3.6. Модуль «Academy»
+
+Древо талантов:
+- Ветки: Пас, Удар, Трюки, Защита, Позиционирование.
+- Узлы открываются последовательно.
+- Уровни: Beginner -> Intermediate -> Advanced -> Pro -> Legend.
+- Легендарные трюки требуют выполнения челленджа.
+
+Карточка движения:
+- Видео (сверху, сбоку, замедленно).
+- Пошаговая инструкция.
+- Типичные ошибки.
+- Упражнение для отработки.
+- Кнопка «Отметить как освоено» -> +XP и разблокировка следующего.
+
+Дополнительно:
+- Trick of the Day.
+- Видео-разбор (загрузи клип -> фидбек).
+- Мастер-классы от про (премиум).
+- Quiz-режим.
+
+3.7. Модуль «Социальное»
+
+- Друзья, подписки, чаты.
+- Клубы/гильдии (создание, вступление, клубный рейтинг).
+- Лента активности (матчи, ачивки, тренировки).
+- Челленджи.
+- Локальные лидерборды (город, бар, клуб).
+- Поиск соперника рядом (геолокация, опционально).
+- Шаринг результатов в соцсети (Web Share API).
+
+3.8. Модуль «Экономика»
+
+- Foos Coins (зарабатываются и тратятся).
+- Магазин: косметика, бусты, билеты на турниры, сундуки.
+- Подписка FoosRPG+.
+- Battle Pass (сезонный).
+
+3.9. Модуль «Настройки»
+
+- Профиль: изменение ника, аватара, био.
+- Приватность: видимость профиля, статистики, матчей.
+- Уведомления: push, email, in-app.
+- Язык: русский, английский.
+- Тема: тёмная (по умолчанию), светлая.
+- Аккаунт: смена пароля, удаление аккаунта.
+- PWA: инструкция по установке, управление кэшем.
+
+
+================================================================================
+4. UX/UI И ДИЗАЙН-СИСТЕМА
+================================================================================
+
+4.1. Визуальный стиль
+
+- Тема: тёмная (основная), светлая (опционально).
+- Цвета:
+  - Background: #0B0F14 (deep dark).
+  - Surface: #111820.
+  - Surface elevated: #1A2330.
+  - Primary accent: #00E5A0 (neon green).
+  - Secondary accent: #00CFFF (cyan).
+  - Warning: #FFB020.
+  - Danger: #FF4D4D.
+  - Success: #00E5A0.
+  - Text primary: #FFFFFF.
+  - Text secondary: #8A97A8.
+  - Border: #1F2A38.
+- Градиенты: для карточек достижений, дивизионов, Battle Pass.
+- Типографика:
+  - Заголовки: Inter / Manrope, 700, крупные.
+  - Body: Inter, 400/500.
+  - Моно: JetBrains Mono для чисел и статистики.
+- Иконки: Lucide + кастомные иконки классов.
+- Скругления: 12–20 px.
+- Тени: мягкие, neon glow для акцентов.
+- Анимации: Framer Motion, 200–400 ms, easing ease-out.
+
+4.2. Компоненты дизайн-системы
+
+- Кнопки: primary, secondary, ghost, danger; размеры sm/md/lg.
+- Карточки: match card, player card, tournament card, lesson card.
+- Бейджи: дивизион, класс, достижение.
+- Прогресс-бары: XP, ELO, streak.
+- Radar chart (карта навыков).
+- Tree (древо талантов).
+- Bracket (турнирная сетка).
+- Tabs, Bottom Navigation (5 табов).
+- Modals, Bottom Sheets.
+- Toast-уведомления.
+- Skeleton-загрузки.
+- Empty states с иллюстрациями.
+
+4.3. Навигация
+
+Нижняя таб-навигация (5 табов):
+1. Home
+2. Play
+3. Train
+4. Academy
+5. Profile
+
+Дополнительные экраны открываются поверх (модалки, push-переходы).
+
+4.4. Доступность
+
+- Контраст >= 4.5:1.
+- Размер тапа >= 44x44 px.
+- Поддержка screen reader (ARIA).
+- Уважение prefers-reduced-motion.
+- Тёмная тема по умолчанию (снижает нагрузку на глаза).
+
+
+================================================================================
+5. ЭКРАНЫ ПРИЛОЖЕНИЯ (ДЕТАЛЬНО)
+================================================================================
+
+5.1. Onboarding
+
+Шаги:
+1. Welcome-экран с логотипом и слоганом.
+2. Выбор языка.
+3. Регистрация / вход / гость.
+4. Выбор ника и аватара.
+5. Выбор класса персонажа (5 карточек с описанием).
+6. Выбор уровня и целей.
+7. Выбор позиции.
+8. Инструкция по установке PWA.
+9. Первый Daily Challenge.
+
+5.2. Home
+
+Блоки:
+- Header: аватар, ник, уровень, Foos Coins, уведомления.
+- Trick of the Day (карточка с видео и кнопкой «Изучить»).
+- Streak-виджет (дни, множитель, кнопка «Продолжить»).
+- Быстрые действия: «Играть», «Тренировка», «Academy».
+- Daily / Weekly квесты (прогресс-бары).
+- Лента активности друзей.
+- Мини-лидерборд (друзья / город).
+
+5.3. Play
+
+Вкладки:
+- Быстрый матч (matchmaking).
+- Приватный матч (создать / присоединиться по коду).
+- Турниры (список, создание, мои турниры).
+- История матчей.
+
+Экран матча:
+- Счёт, таймер, лог событий.
+- Кнопки: «Гол», «Ассист», «Отменить».
+- Завершение матча -> подтверждение результата.
+
+Post-Match:
+- Recap: счёт, статистика, ELO +-N.
+- Награды: XP, монеты, дроп.
+- Кнопки: «Реванш», «Добавить в друзья», «Поделиться».
+
+5.4. Train
+
+Вкладки:
+- Мой план (персональный).
+- Daily Challenge.
+- Drills (библиотека упражнений).
+- Solo Challenges.
+- Partner Sessions.
+- Стрик и статистика.
+
+Карточка тренировки:
+- Название, описание, длительность, сложность.
+- Связанный навык.
+- Кнопка «Начать» -> таймер -> «Завершить» -> награды.
+
+5.5. Academy
+
+Вкладки:
+- Древо талантов (визуальное).
+- Библиотека (список).
+- Trick of the Day.
+- Мои освоенные.
+- Видео-разбор.
+
+Древо талантов:
+- 5 веток, каждая — вертикальная цепочка узлов.
+- Узлы: locked / available / in-progress / mastered.
+- Клик -> карточка движения.
+
+5.6. Profile
+
+Блоки:
+- Header: аватар, ник, класс, уровень, дивизион.
+- ELO + прогресс до следующего дивизиона.
+- Карта навыков (radar).
+- Foos DNA (стиль).
+- Экипировка (текущая).
+- Инвентарь.
+- Достижения.
+- Heatmap активности.
+- История матчей.
+- Кнопки: «Поделиться», «Настройки».
+
+5.7. Social
+
+- Друзья (список, поиск, запросы).
+- Клубы (мои, поиск, создание).
+- Чаты (1v1, клубные).
+- Лента активности.
+- Челленджи.
+
+5.8. Shop
+
+- Foos Coins (баланс, пополнение).
+- Косметика (скины, рамки, мячи, празднования, титулы).
+- Бусты (XP x2, монеты x2).
+- Билеты на турниры.
+- Сундуки.
+- Подписка FoosRPG+.
+- Battle Pass.
+
+5.9. Settings
+
+- Профиль.
+- Приватность.
+- Уведомления.
+- Язык.
+- Тема.
+- Аккаунт.
+- PWA (инструкция, кэш).
+
+
+================================================================================
+6. ИГРОВЫЕ СИСТЕМЫ
+================================================================================
+
+6.1. ELO-рейтинг
+
+Формула:
+  R_new = R_old + K * (S - E)
+  E = 1 / (1 + 10^((R_opp - R_old) / 400))
+
+Где:
+- R — рейтинг.
+- K — коэффициент (новички 40, опытные 24, топы 16).
+- S — результат (1 победа, 0.5 ничья, 0 поражение).
+- E — ожидаемый результат.
+
+Модификаторы:
+- Бонус за апсет: x1.1, если разница > 200.
+- Штраф за неактивность: -5 ELO/неделя после 30 дней.
+- Бонус за серию побед: +10% за 3+ подряд.
+
+Дивизионы:
+- Bronze: 0–999.
+- Silver: 1000–1199.
+- Gold: 1200–1399.
+- Platinum: 1400–1599.
+- Diamond: 1600–1799.
+- Master: 1800–1999.
+- Legend: 2000+.
+
+Сезоны:
+- 3 месяца.
+- Soft reset: R_new = 1000 + (R_old - 1000) * 0.7.
+- Награды за финальный дивизион.
+
+6.2. XP и уровни персонажа
+
+Источники XP:
+- Матч: 20 XP (победа 30).
+- Тренировка: 10–50 XP.
+- Daily Challenge: 30 XP.
+- Урок Academy: 20 XP.
+- Турнир: 100+ XP.
+
+Формула уровня:
+  XP_to_next = 100 * level^1.5
+
+- Уровень 1 -> 2: 100 XP.
+- Уровень 10 -> 11: ~3162 XP.
+- Уровень 50 -> 51: ~35355 XP.
+
+Награды за уровень: монеты, косметика, бусты.
+
+6.3. Стрики
+
+- День считается активным, если выполнена >= 1 тренировка или матч.
+- Множители: 7 дней x1.2, 30 дней x1.5, 100 дней x2.
+- Заморозка стрика (1 раз в неделю, стоит монеты).
+- Восстановление стрика (премиум).
+
+6.4. Foos Coins
+
+Заработок:
+- Матч: 10–50.
+- Тренировка: 5–30.
+- Daily Challenge: 20.
+- Турнир: 50–500.
+- Квесты: 10–100.
+
+Траты:
+- Косметика: 100–2000.
+- Бусты: 50–200.
+- Билеты на турниры: 100–500.
+- Сундуки: 200–1000.
+
+6.5. Карта навыков
+
+6 осей: пас, удар, защита, контроль, трюки, позиционирование.
+- Значения 0–100.
+- Растут от тренировок, матчей, освоенных уроков.
+- Влияют на Foos DNA и рекомендации.
+
+6.6. Foos DNA
+
+Авто-генерация стиля на основе:
+- Карты навыков.
+- Статистики матчей.
+- Предпочитаемых движений.
+
+Примеры:
+- «Trickster-одиночка с уклоном в левый фланг».
+- «Guardian-стена, любит прессинг».
+- «Playmaker-командный, много ассистов».
+
+6.7. Древо талантов
+
+- 5 веток x 10–15 узлов.
+- Каждый узел = движение/навык.
+- Открывается после освоения предыдущего.
+- Легендарные узлы требуют челленджа.
+
+6.8. Достижения
+
+Категории:
+- Матчи (первая победа, 100 побед, апсет).
+- Тренировки (7-дневный стрик, 1000 пасов).
+- Academy (10 освоенных движений, легендарный трюк).
+- Турниры (первый турнир, финалист, чемпион).
+- Социальные (10 друзей, клуб).
+- Секретные.
+
+6.9. Квесты
+
+Daily:
+- Сыграй 1 матч.
+- Пройди 1 тренировку.
+- Освой 1 урок.
+- Выполни Daily Challenge.
+
+Weekly:
+- Сыграй 5 матчей.
+- Прокачай навык на +5.
+- Участвуй в турнире.
+- Пригласи друга.
+
+6.10. Battle Pass
+
+- Сезонный (3 месяца).
+- Бесплатный + премиум трек.
+- Награды: косметика, монеты, бусты, эксклюзивы.
+- Прогресс через квесты и матчи.
+
+
+================================================================================
+7. ТЕХНИЧЕСКАЯ АРХИТЕКТУРА
+================================================================================
+
+7.1. Стек
+
+Frontend:
+- React 18 + Vite + TypeScript.
+- Tailwind CSS + shadcn/ui.
+- Framer Motion (анимации).
+- TanStack Query (кэш API).
+- Zustand (локальный стейт).
+- Dexie.js (IndexedDB).
+- Socket.io-client (реалтайм).
+- Recharts / Visx (графики).
+- Vite PWA Plugin (Workbox).
+- React Hook Form + Zod (формы).
+- i18next (локализация).
+- date-fns (даты).
+
+Backend:
+- Node.js 20 + NestJS.
+- PostgreSQL 16.
+- Redis 7 (кэш, сессии, реалтайм).
+- Socket.io (WebSocket).
+- Prisma (ORM).
+- BullMQ (очереди).
+- S3-совместимое хранилище (Cloudflare R2 / MinIO).
+- Web Push (VAPID).
+- Supabase Auth / Lucia (auth).
+- Zod (валидация).
+- Pino (логи).
+
+Infra:
+- Docker + Docker Compose.
+- Fly.io / Railway / Hetzner (хостинг).
+- Cloudflare (CDN, DNS, DDoS).
+- GitHub Actions (CI/CD).
+- Sentry (ошибки).
+- PostHog (аналитика).
+- Uptime Kuma (мониторинг).
+
+7.2. Структура проекта (frontend)
+
+foosrpg-web/
+├── public/
+│   ├── icons/           # PWA-иконки
+│   ├── screenshots/     # скриншоты для manifest
+│   ├── manifest.webmanifest
+│   └── robots.txt
+├── src/
+│   ├── app/
+│   │   ├── App.tsx
+│   │   ├── router.tsx
+│   │   └── providers.tsx
+│   ├── pages/
+│   │   ├── onboarding/
+│   │   ├── home/
+│   │   ├── play/
+│   │   ├── train/
+│   │   ├── academy/
+│   │   ├── profile/
+│   │   ├── social/
+│   │   ├── shop/
+│   │   └── settings/
+│   ├── features/
+│   │   ├── auth/
+│   │   ├── matches/
+│   │   ├── tournaments/
+│   │   ├── trainings/
+│   │   ├── academy/
+│   │   ├── social/
+│   │   ├── economy/
+│   │   └── notifications/
+│   ├── components/
+│   │   ├── ui/          # shadcn
+│   │   ├── layout/
+│   │   └── shared/
+│   ├── lib/
+│   │   ├── api/         # клиент API
+│   │   ├── db/          # Dexie
+│   │   ├── socket/
+│   │   ├── auth/
+│   │   ├── pwa/
+│   │   └── utils/
+│   ├── hooks/
+│   ├── stores/
+│   ├── styles/
+│   ├── types/
+│   └── i18n/
+├── service-worker.ts
+├── vite.config.ts
+├── tailwind.config.ts
+├── tsconfig.json
+└── package.json
+
+7.3. Структура проекта (backend)
+
+foosrpg-api/
+├── src/
+│   ├── main.ts
+│   ├── app.module.ts
+│   ├── modules/
+│   │   ├── auth/
+│   │   ├── users/
+│   │   ├── profiles/
+│   │   ├── ratings/
+│   │   ├── matches/
+│   │   ├── tournaments/
+│   │   ├── trainings/
+│   │   ├── academy/
+│   │   ├── social/
+│   │   ├── economy/
+│   │   ├── notifications/
+│   │   └── analytics/
+│   ├── common/
+│   │   ├── guards/
+│   │   ├── interceptors/
+│   │   ├── filters/
+│   │   ├── decorators/
+│   │   └── pipes/
+│   ├── infra/
+│   │   ├── prisma/
+│   │   ├── redis/
+│   │   ├── socket/
+│   │   ├── storage/
+│   │   ├── push/
+│   │   └── queue/
+│   └── config/
+├── prisma/
+│   └── schema.prisma
+├── test/
+├── Dockerfile
+├── docker-compose.yml
+└── package.json
+
+
+================================================================================
+8. СХЕМА БАЗЫ ДАННЫХ
+================================================================================
+
+8.1. Основные таблицы
+
+users
+- id (uuid, pk)
+- email (unique)
+- password_hash
+- provider (email / google / apple)
+- provider_id
+- role (user / admin)
+- created_at, updated_at
+
+profiles
+- id (uuid, pk)
+- user_id (fk -> users)
+- nickname (unique)
+- avatar_url
+- country, city
+- bio
+- class (enum: striker / guardian / playmaker / trickster / tactician)
+- position (enum: goalkeeper / defender / forward / universal)
+- level (int)
+- xp (int)
+- coins (int)
+- streak_current (int)
+- streak_max (int)
+- streak_last_date (date)
+- foos_dna (jsonb)
+- created_at, updated_at
+
+ratings
+- id (uuid, pk)
+- profile_id (fk)
+- season_id (fk -> seasons)
+- elo (int)
+- division (enum)
+- matches_played (int)
+- wins, losses, draws (int)
+- goals_for, goals_against (int)
+- assists (int)
+- tournament_rating (int)
+- updated_at
+
+seasons
+- id (uuid, pk)
+- number (int)
+- name
+- starts_at, ends_at
+- is_active (bool)
+
+skill_maps
+- id (uuid, pk)
+- profile_id (fk)
+- passing (int 0–100)
+- shooting (int)
+- defense (int)
+- control (int)
+- tricks (int)
+- positioning (int)
+- updated_at
+
+matches
+- id (uuid, pk)
+- type (enum: ranked / friendly / private / tournament / training)
+- format (enum: 1v1 / 2v2)
+- goal_limit (int)
+- best_of (int)
+- tournament_id (fk, nullable)
+- created_by (fk -> profiles)
+- status (enum: pending / in_progress / completed / disputed)
+- score_a, score_b (int)
+- started_at, completed_at
+- created_at
+
+match_players
+- id (uuid, pk)
+- match_id (fk)
+- profile_id (fk)
+- team (a / b)
+- goals (int)
+- assists (int)
+- is_confirmed (bool)
+
+match_events
+- id (uuid, pk)
+- match_id (fk)
+- profile_id (fk)
+- type (enum: goal / assist / own_goal / error)
+- minute (int)
+- created_at
+
+tournaments
+- id (uuid, pk)
+- name
+- description
+- cover_url
+- format (enum: single_elim / double_elim / round_robin / swiss / league)
+- max_players (int)
+- entry_fee (int)
+- prize_pool (int)
+- min_elo (int, nullable)
+- max_elo (int, nullable)
+- region
+- starts_at
+- status (enum: draft / registration / ongoing / completed / cancelled)
+- created_by (fk -> profiles)
+- created_at
+
+tournament_participants
+- id (uuid, pk)
+- tournament_id (fk)
+- profile_id (fk)
+- seed (int)
+- placement (int, nullable)
+- created_at
+
+tournament_matches
+- id (uuid, pk)
+- tournament_id (fk)
+- match_id (fk -> matches)
+- round (int)
+- bracket_position (int)
+- next_match_id (fk, nullable)
+
+trainings
+- id (uuid, pk)
+- profile_id (fk)
+- type (enum: drill / solo / shadow / partner / daily)
+- title
+- description
+- skill (enum)
+- duration_min (int)
+- xp_reward (int)
+- coins_reward (int)
+- completed_at
+- created_at
+
+training_plans
+- id (uuid, pk)
+- profile_id (fk)
+- generated_at
+- valid_until
+- items (jsonb)
+
+lessons
+- id (uuid, pk)
+- branch (enum: passing / shooting / tricks / defense / positioning)
+- level (enum: beginner / intermediate / advanced / pro / legend)
+- title
+- description
+- video_url
+- steps (jsonb)
+- common_mistakes (jsonb)
+- drill_id (fk -> trainings, nullable)
+- xp_reward (int)
+- prerequisite_id (fk, nullable)
+- is_legendary (bool)
+
+user_lessons
+- id (uuid, pk)
+- profile_id (fk)
+- lesson_id (fk)
+- status (enum: locked / available / in_progress / mastered)
+- mastered_at
+
+achievements
+- id (uuid, pk)
+- code (unique)
+- title
+- description
+- icon_url
+- category (enum)
+- xp_reward, coins_reward (int)
+- is_secret (bool)
+
+user_achievements
+- id (uuid, pk)
+- profile_id (fk)
+- achievement_id (fk)
+- unlocked_at
+
+quests
+- id (uuid, pk)
+- code
+- title
+- description
+- type (enum: daily / weekly)
+- goal (int)
+- xp_reward, coins_reward (int)
+- is_active (bool)
+
+user_quests
+- id (uuid, pk)
+- profile_id (fk)
+- quest_id (fk)
+- progress (int)
+- completed_at
+- reset_at
+
+friends
+- id (uuid, pk)
+- profile_id (fk)
+- friend_id (fk)
+- status (enum: pending / accepted / blocked)
+- created_at
+
+clubs
+- id (uuid, pk)
+- name (unique)
+- description
+- avatar_url
+- owner_id (fk -> profiles)
+- rating (int)
+- created_at
+
+club_members
+- id (uuid, pk)
+- club_id (fk)
+- profile_id (fk)
+- role (enum: owner / admin / member)
+- joined_at
+
+challenges
+- id (uuid, pk)
+- title
+- description
+- type (enum: goals / wins / streak / custom)
+- goal (int)
+- starts_at, ends_at
+- created_by (fk -> profiles)
+
+challenge_participants
+- id (uuid, pk)
+- challenge_id (fk)
+- profile_id (fk)
+- progress (int)
+- completed_at
+
+transactions
+- id (uuid, pk)
+- profile_id (fk)
+- type (enum: earn / spend / purchase / refund)
+- amount (int)
+- source (enum: match / training / quest / tournament / shop / subscription)
+- metadata (jsonb)
+- created_at
+
+inventory
+- id (uuid, pk)
+- profile_id (fk)
+- item_id (fk -> items)
+- quantity (int)
+- is_equipped (bool)
+- acquired_at
+
+items
+- id (uuid, pk)
+- code (unique)
+- name
+- description
+- type (enum: avatar_frame / table_skin / ball_skin / goal_celebration /
+  title / boost / chest / ticket)
+- rarity (enum: common / rare / epic / legendary)
+- price_coins (int, nullable)
+- price_real (decimal, nullable)
+- icon_url
+- metadata (jsonb)
+
+subscriptions
+- id (uuid, pk)
+- profile_id (fk)
+- plan (enum: plus_monthly / plus_yearly)
+- status (enum: active / cancelled / expired)
+- started_at
+- expires_at
+- provider (stripe / apple / google)
+
+battle_passes
+- id (uuid, pk)
+- season_id (fk)
+- name
+- starts_at, ends_at
+- is_active (bool)
+
+battle_pass_progress
+- id (uuid, pk)
+- profile_id (fk)
+- battle_pass_id (fk)
+- level (int)
+- xp (int)
+- is_premium (bool)
+- claimed_rewards (jsonb)
+
+notifications
+- id (uuid, pk)
+- profile_id (fk)
+- type (enum: match / tournament / quest / streak / social / system)
+- title
+- body
+- data (jsonb)
+- is_read (bool)
+- created_at
+
+push_subscriptions
+- id (uuid, pk)
+- profile_id (fk)
+- endpoint
+- keys (jsonb)
+- created_at
+
+activity_feed
+- id (uuid, pk)
+- profile_id (fk)
+- type (enum: match / achievement / training / tournament / level_up)
+- data (jsonb)
+- created_at
+
+8.2. Индексы
+
+- users.email (unique).
+- profiles.nickname (unique).
+- ratings.profile_id + season_id (unique).
+- matches.status + type.
+- match_players.match_id.
+- tournament_participants.tournament_id.
+- trainings.profile_id + completed_at.
+- user_quests.profile_id + reset_at.
+- activity_feed.profile_id + created_at.
+
+
+================================================================================
+9. API-КОНТРАКТЫ
+================================================================================
+
+9.1. REST-эндпоинты
+
+Auth:
+- POST /auth/register — регистрация.
+- POST /auth/login — вход.
+- POST /auth/logout — выход.
+- POST /auth/refresh — обновление токена.
+- POST /auth/forgot-password — восстановление.
+- GET /auth/me — текущий пользователь.
+
+Profile:
+- GET /profiles/me — мой профиль.
+- PATCH /profiles/me — обновить.
+- GET /profiles/:id — профиль игрока.
+- GET /profiles/:id/stats — статистика.
+- GET /profiles/:id/skills — карта навыков.
+- GET /profiles/:id/dna — Foos DNA.
+- GET /profiles/:id/achievements — достижения.
+- GET /profiles/:id/inventory — инвентарь.
+
+Matches:
+- POST /matches — создать.
+- GET /matches/:id — получить.
+- POST /matches/:id/join — присоединиться.
+- POST /matches/:id/events — добавить событие.
+- POST /matches/:id/complete — завершить.
+- POST /matches/:id/confirm — подтвердить.
+- GET /matches/history — история.
+- POST /matches/matchmaking — поиск соперника.
+
+Tournaments:
+- POST /tournaments — создать.
+- GET /tournaments — список.
+- GET /tournaments/:id — детали.
+- POST /tournaments/:id/join — присоединиться.
+- POST /tournaments/:id/start — старт.
+- GET /tournaments/:id/bracket — сетка.
+- GET /tournaments/:id/standings — таблица.
+
+Trainings:
+- GET /trainings/plan — персональный план.
+- POST /trainings — создать.
+- POST /trainings/:id/complete — завершить.
+- GET /trainings/history — история.
+- GET /trainings/daily — Daily Challenge.
+
+Academy:
+- GET /academy/tree — древо талантов.
+- GET /academy/lessons — список уроков.
+- GET /academy/lessons/:id — урок.
+- POST /academy/lessons/:id/master — отметить освоенным.
+- GET /academy/trick-of-the-day — Trick of the Day.
+
+Social:
+- GET /friends — друзья.
+- POST /friends/request — запрос.
+- POST /friends/accept — принять.
+- GET /clubs — клубы.
+- POST /clubs — создать.
+- POST /clubs/:id/join — вступить.
+- GET /feed — лента.
+- GET /challenges — челленджи.
+- POST /challenges/:id/join — участвовать.
+
+Economy:
+- GET /wallet — баланс.
+- GET /shop — магазин.
+- POST /shop/purchase — покупка.
+- GET /transactions — история.
+- POST /subscriptions — подписка.
+- GET /battle-pass — Battle Pass.
+
+Notifications:
+- GET /notifications — список.
+- POST /notifications/read — прочитать.
+- POST /push/subscribe — подписка на push.
+
+Analytics:
+- POST /analytics/event — событие.
+
+9.2. WebSocket-события
+
+Namespace: /realtime
+
+Client -> Server:
+- match:join — присоединиться к матчу.
+- match:event — событие матча.
+- match:leave — покинуть.
+- tournament:subscribe — подписка на турнир.
+- chat:send — сообщение.
+- lobby:join — лобби matchmaking.
+
+Server -> Client:
+- match:update — обновление счёта.
+- match:completed — матч завершён.
+- tournament:update — обновление сетки.
+- chat:message — новое сообщение.
+- notification:new — новое уведомление.
+- lobby:matched — соперник найден.
+
+
+================================================================================
+10. PWA-ТРЕБОВАНИЯ
+================================================================================
+
+10.1. Manifest (manifest.webmanifest)
+
+{
+  "name": "FoosRPG",
+  "short_name": "FoosRPG",
+  "description": "RPG-платформа для настольного футбола",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0B0F14",
+  "theme_color": "#00E5A0",
+  "lang": "ru",
+  "dir": "ltr",
+  "categories": ["games", "sports", "social"],
+  "icons": [
+    { "src": "/icons/192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512",
+      "type": "image/png", "purpose": "maskable" }
+  ],
+  "screenshots": [
+    { "src": "/screenshots/home.png", "sizes": "1080x1920",
+      "type": "image/png", "form_factor": "narrow" },
+    { "src": "/screenshots/play.png", "sizes": "1080x1920",
+      "type": "image/png", "form_factor": "narrow" }
+  ],
+  "shortcuts": [
+    { "name": "Быстрый матч", "url": "/play/quick",
+      "icons": [{ "src": "/icons/shortcut-play.png", "sizes": "96x96" }] },
+    { "name": "Daily Challenge", "url": "/train/daily",
+      "icons": [{ "src": "/icons/shortcut-train.png", "sizes": "96x96" }] },
+    { "name": "Trick of the Day", "url": "/academy/today",
+      "icons": [{ "src": "/icons/shortcut-academy.png", "sizes": "96x96" }] }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [{ "name": "media", "accept": ["image/*", "video/*"] }]
+    }
+  },
+  "protocol_handlers": [
+    { "protocol": "web+foosrpg", "url": "/handle?url=%s" }
+  ]
+}
+
+10.2. Service Worker
+
+Стратегии:
+- App Shell: precache (HTML, CSS, JS, шрифты, иконки).
+- API GET: stale-while-revalidate.
+- API POST/PATCH: network-only с очередью при оффлайне (Background Sync).
+- Изображения: cache-first с fallback.
+- Видео: cache-first с ограничением по размеру.
+
+События:
+- install — precache shell.
+- activate — очистка старого кэша.
+- fetch — маршрутизация запросов.
+- push — показ уведомления.
+- notificationclick — открытие нужного экрана.
+- sync — отправка отложенных действий.
+- periodicsync — обновление данных (опционально).
+
+10.3. Оффлайн-режим
+
+- IndexedDB (Dexie) для локальных данных: тренировки, черновики матчей,
+  кэш профиля.
+- Очередь действий при оффлайне -> синк при возврате.
+- Оптимистичные обновления UI.
+- Индикатор оффлайн-статуса в header.
+
+10.4. iOS-специфика
+
+- <meta name="apple-mobile-web-app-capable" content="yes">.
+- <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">.
+- <link rel="apple-touch-icon" href="/icons/192.png">.
+- Splash-экраны через <link rel="apple-touch-startup-image">.
+- Push работают только для установленного PWA (iOS 16.4+).
+- Обязательно показывать инструкцию «Поделиться -> На экран Домой» при
+  первом заходе с iOS (детект по user agent).
+
+10.5. Android-специфика
+
+- beforeinstallprompt — кастомный баннер установки.
+- TWA (Trusted Web Activity) — опционально для публикации в Play Store позже.
+- Push работают с первого захода (при разрешении).
+
+10.6. Производительность
+
+- Lighthouse PWA >= 95.
+- Initial bundle <= 200 KB (gzip).
+- LCP <= 2.5 s, FID <= 100 ms, CLS <= 0.1.
+- Lazy-load видео и тяжёлых экранов.
+- Изображения в WebP/AVIF.
+- Шрифты с font-display: swap.
+- Критический CSS inline.
+
+
+================================================================================
+11. БЕЗОПАСНОСТЬ И АНТИ-ЧИТ
+================================================================================
+
+11.1. Безопасность
+
+- JWT + refresh tokens (httpOnly cookies).
+- HTTPS обязательно.
+- CORS строго настроен.
+- Rate limiting (Redis).
+- Валидация входных данных (Zod).
+- SQL-инъекции — защита через Prisma.
+- XSS — санитизация.
+- CSRF — токены.
+- Пароли — bcrypt/argon2.
+- 2FA (опционально, v2).
+
+11.2. Анти-чит
+
+- Аномалии в статистике (слишком много побед подряд).
+- Проверка IP/устройства.
+- Ручная модерация жалоб.
+- Видео-верификация для крупных турниров.
+- Ограничение на создание новых аккаунтов с одного устройства.
+- Логирование всех подозрительных действий.
+
+11.3. Приватность
+
+- GDPR-совместимость.
+- Экспорт данных пользователя.
+- Удаление аккаунта.
+- Согласие на аналитику.
+- Настройки приватности профиля.
+
+
+================================================================================
+12. АНАЛИТИКА И МЕТРИКИ
+================================================================================
+
+12.1. События (PostHog)
+
+- user_registered, user_logged_in, pwa_installed.
+- match_created, match_completed, match_confirmed.
+- tournament_created, tournament_joined, tournament_completed.
+- training_started, training_completed.
+- lesson_viewed, lesson_mastered.
+- quest_completed, achievement_unlocked.
+- streak_extended, streak_broken.
+- purchase_made, subscription_started.
+- friend_added, club_joined.
+- share_clicked.
+
+12.2. Метрики
+
+- DAU/MAU, retention D1/D7/D30.
+- Средний стрик.
+- Матчей на пользователя в неделю.
+- Конверсия в установку PWA.
+- Конверсия в подписку.
+- ARPU, LTV.
+- NPS (опросы).
+
+12.3. Дашборды
+
+- Product (PostHog).
+- Errors (Sentry).
+- Infra (Grafana / Uptime Kuma).
+
+
+================================================================================
+13. МОНЕТИЗАЦИЯ
+================================================================================
+
+13.1. FoosRPG+ (подписка)
+
+- Расширенная статистика.
+- Видео-разбор.
+- Премиум-уроки.
+- Без рекламы.
+- Восстановление стрика.
+- Эксклюзивная косметика.
+- Цена: 299 руб/мес или 2490 руб/год.
+
+13.2. Косметика
+
+- Скины стола, мяча, аватары, рамки, празднования, титулы.
+- Цены: 100–2000 монет или 99–999 руб.
+
+13.3. Battle Pass
+
+- Бесплатный + премиум трек.
+- Премиум: 499 руб/сезон.
+
+13.4. Турниры с призами
+
+- Партнёрство с барами/брендами.
+- Взнос + призовой фонд.
+- Комиссия платформы 10%.
+
+13.5. B2B
+
+- Лицензия для баров и клубов.
+- Свой лидерборд, брендинг.
+- Цена: от 5000 руб/мес.
+
+13.6. Реклама (опционально)
+
+- Non-intrusive, только для бесплатных пользователей.
+- Партнёрские бренды (кикер-оборудование).
+
+
+================================================================================
+14. ROADMAP И ПРИОРИТЕТЫ
+================================================================================
+
+14.1. MVP (0–3 мес)
+
+Цель: запустить базовую версию с ключевыми фичами.
+
+- PWA-каркас: manifest, Service Worker, установка на iOS/Android.
+- Auth (email + Google).
+- Онбординг (класс, уровень, цели).
+- Профиль персонажа (аватар, ник, класс, уровень, ELO, дивизион).
+- Матчи 1v1: рейтинговые, товарищеские, приватные.
+- ELO + дивизионы.
+- Post-Match recap.
+- Daily Challenge + стрик.
+- Academy: 10–15 движений (плоский список).
+- Foos Coins (базовая экономика).
+- Базовые push-уведомления.
+- Аналитика (PostHog).
+
+14.2. v2 (3–6 мес)
+
+- Турниры (single elimination, round robin).
+- 2v2, клубы, друзья, чаты.
+- Древо талантов в Academy.
+- Магазин, сундуки, бусты.
+- Расширенная статистика и карта навыков.
+- Foos DNA.
+- Оффлайн-режим для тренировок.
+- Battle Pass.
+
+14.3. v3 (6–12 мес)
+
+- Видео-верификация трюков.
+- CV-анализ через камеру (MediaPipe WASM).
+- Сезоны, лиги, рейтинговые награды.
+- Про-контент, мастер-классы.
+- B2B для баров.
+- Партнёрские турниры с призами.
+- Подписка FoosRPG+.
+
+14.4. Приоритеты
+
+Must have (MVP): auth, профиль, матчи 1v1, ELO, Daily Challenge,
+Academy (базовая), PWA.
+Should have (v2): турниры, 2v2, клубы, древо талантов, магазин.
+Could have (v3): CV-анализ, Battle Pass, B2B.
+Won't have (пока): нативные приложения, AR/VR.
+
+
+================================================================================
+15. DEFINITION OF DONE
+================================================================================
+
+15.1. Для фичи
+
+- Код написан, ревью пройдено.
+- Покрытие тестами >= 70% для критичных модулей.
+- Работает на iOS Safari, Android Chrome, десктопе.
+- Работает оффлайн (если применимо).
+- Lighthouse PWA >= 95.
+- Нет ошибок в Sentry.
+- Аналитика настроена.
+- Документация обновлена.
+- Дизайн соответствует макетам.
+- Доступность (a11y) проверена.
+
+15.2. Для релиза
+
+- Все must-have фичи готовы.
+- Пройдено ручное тестирование.
+- Пройдено нагрузочное тестирование (1000 RPS).
+- Бэкапы БД настроены.
+- Мониторинг настроен.
+- Rollback-план готов.
+- Privacy Policy и Terms of Service опубликованы.
+- PWA проходит Lighthouse >= 95.
+- Push-уведомления работают на iOS 16.4+ и Android.
+
+15.3. Тестирование
+
+- Unit-тесты (Vitest / Jest).
+- Integration-тесты (Supertest).
+- E2E-тесты (Playwright).
+- Ручное тестирование на реальных устройствах (iPhone, Android).
+- Тестирование оффлайн-режима.
+- Тестирование push-уведомлений.
+
+
+================================================================================
+16. ГОТОВЫЙ ПРОМПТ ДЛЯ АГЕНТА
+================================================================================
+
+Задача: разработать PWA-приложение FoosRPG — RPG-платформу для настольного
+футбола (кикера).
+
+Формат: Progressive Web App. Устанавливается на iOS и Android из браузера.
+Работает оффлайн. Поддерживает push-уведомления. Проходит Lighthouse PWA >= 95.
+
+Стек:
+- Frontend: React 18 + Vite + TypeScript, Tailwind CSS + shadcn/ui,
+  Framer Motion, TanStack Query, Zustand, Dexie.js (IndexedDB),
+  Socket.io-client, Recharts, Vite PWA Plugin (Workbox),
+  React Hook Form + Zod, i18next.
+- Backend: NestJS + PostgreSQL + Prisma + Redis + Socket.io + BullMQ,
+  S3-совместимое хранилище (Cloudflare R2), Web Push (VAPID),
+  Supabase Auth / Lucia.
+- Infra: Docker, Fly.io / Railway, Cloudflare CDN, GitHub Actions,
+  Sentry, PostHog.
+
+Ключевые модули:
+1. Auth + онбординг: email/Google/Apple, выбор класса (Striker / Guardian /
+   Playmaker / Trickster / Tactician), уровня, целей, позиции;
+   инструкция по установке PWA.
+2. Профиль персонажа: аватар, ник, класс, уровень (XP), ELO, дивизион,
+   карта навыков (radar), Foos DNA, экипировка, инвентарь, достижения,
+   квесты, heatmap, история матчей.
+3. Матчи: рейтинговые (ELO), товарищеские, приватные, турнирные,
+   тренировочные; 1v1 и 2v2; форматы до 5/7/10 голов, Bo3/Bo5;
+   matchmaking; post-match recap с наградами.
+4. Турниры: single/double elimination, round robin, swiss, сезонная лига;
+   авто-жеребьёвка; пересчёт ELO + бонус за место; MVP; турнирный дневник.
+5. Тренировки: drill-сессии, solo challenges, shadow match, partner session,
+   daily challenge; стрики; XP; Foos Coins; сундуки; персональный план
+   на основе слабых зон; оффлайн-режим.
+6. Academy: древо талантов (5 веток: Пас, Удар, Трюки, Защита,
+   Позиционирование), уровни Beginner -> Legend, видео, пошаговые
+   инструкции, типичные ошибки, отметка «освоено», Trick of the Day,
+   видео-разбор, quiz.
+7. Социальное: друзья, клубы, чаты, лента активности, челленджи,
+   лидерборды, геолокация, Web Share API.
+8. Экономика: Foos Coins, магазин (косметика, бусты, билеты, сундуки),
+   подписка FoosRPG+, Battle Pass.
+9. Уведомления: push (Web Push VAPID), in-app, email; настройки.
+10. Настройки: профиль, приватность, уведомления, язык, тема, аккаунт, PWA.
+
+PWA-требования:
+- Manifest с иконками (192, 512, maskable), screenshots, shortcuts,
+  share_target, protocol_handlers.
+- Service Worker (Workbox): App Shell precache, stale-while-revalidate
+  для API, Background Sync для оффлайн-действий, push-обработчик,
+  notificationclick.
+- Оффлайн-режим: IndexedDB (Dexie), очередь действий, оптимистичные
+  обновления, индикатор оффлайн-статуса.
+- iOS: apple-touch-icon, splash screens, инструкция «На экран Домой»,
+  push только для установленного PWA (iOS 16.4+).
+- Android: beforeinstallprompt, кастомный install-баннер.
+- Производительность: Lighthouse PWA >= 95, initial bundle <= 200 KB,
+  LCP <= 2.5 s, CLS <= 0.1.
+
+Дизайн-система:
+- Тёмная тема: background #0B0F14, surface #111820, primary #00E5A0,
+  secondary #00CFFF, text #FFFFFF / #8A97A8.
+- Типографика: Inter / Manrope, моно JetBrains Mono.
+- Скругления 12–20 px, мягкие тени, neon glow для акцентов.
+- Анимации Framer Motion 200–400 ms.
+- Компоненты: кнопки, карточки, бейджи, прогресс-бары, radar chart,
+  tree, bracket, tabs, bottom nav (5 табов), modals, bottom sheets,
+  toast, skeleton, empty states.
+- Навигация: Home, Play, Train, Academy, Profile.
+
+Игровые системы:
+- ELO-формула с K-фактором (40/24/16), бонус за апсет, штраф
+  за неактивность, бонус за серию.
+- Дивизионы: Bronze (0–999), Silver (1000–1199), Gold (1200–1399),
+  Platinum (1400–1599), Diamond (1600–1799), Master (1800–1999),
+  Legend (2000+).
+- Сезоны 3 месяца, soft reset -30%.
+- XP: 100 * level^1.5.
+- Стрики: 7/30/100 дней -> множители 1.2/1.5/2.
+- Foos Coins: заработок и траты.
+- Карта навыков: 6 осей 0–100.
+- Foos DNA: авто-генерация стиля.
+- Древо талантов: 5 веток x 10–15 узлов.
+- Достижения, квесты (daily/weekly), Battle Pass.
+
+БД: см. раздел 8 (users, profiles, ratings, seasons, skill_maps, matches,
+match_players, match_events, tournaments, tournament_participants,
+tournament_matches, trainings, training_plans, lessons, user_lessons,
+achievements, user_achievements, quests, user_quests, friends, clubs,
+club_members, challenges, challenge_participants, transactions, inventory,
+items, subscriptions, battle_passes, battle_pass_progress, notifications,
+push_subscriptions, activity_feed).
+
+API: REST + WebSocket. Эндпоинты: auth, profiles, matches, tournaments,
+trainings, academy, social, economy, notifications, analytics.
+WS: match:join, match:event, match:update, tournament:subscribe,
+chat:send, notification:new.
+
+Безопасность: JWT + refresh, HTTPS, CORS, rate limiting, Zod-валидация,
+Prisma (SQL-инъекции), санитизация (XSS), CSRF-токены, bcrypt/argon2,
+анти-чит (аномалии, IP, модерация, видео-верификация), GDPR.
+
+Аналитика: PostHog (события: user_registered, pwa_installed,
+match_completed, tournament_completed, training_completed, lesson_mastered,
+quest_completed, achievement_unlocked, streak_extended, purchase_made,
+subscription_started, share_clicked). Метрики: DAU/MAU, retention D1/D7/D30,
+средний стрик, конверсия в PWA, ARPU, LTV.
+
+Монетизация: FoosRPG+ (299 руб/мес), косметика, Battle Pass (499 руб/сезон),
+турниры с призами (комиссия 10%), B2B для баров (от 5000 руб/мес),
+non-intrusive реклама.
+
+Roadmap:
+- MVP (0–3 мес): PWA-каркас, auth, онбординг, профиль, матчи 1v1, ELO,
+  Daily Challenge, Academy (10–15 движений), Foos Coins, push.
+- v2 (3–6 мес): турниры, 2v2, клубы, древо талантов, магазин, оффлайн,
+  Battle Pass.
+- v3 (6–12 мес): видео-верификация, CV-анализ, сезоны, про-контент, B2B,
+  подписка.
+
+Definition of Done:
+- Код написан, ревью пройдено, тесты >= 70%.
+- Работает на iOS Safari, Android Chrome, десктопе.
+- Работает оффлайн.
+- Lighthouse PWA >= 95.
+- Нет ошибок в Sentry.
+- Аналитика настроена.
+- Документация обновлена.
+- Дизайн соответствует макетам.
+- Доступность (a11y) проверена.
+
+Что сгенерировать:
+1. Структуру проекта (frontend + backend).
+2. Схему БД (Prisma schema).
+3. API-эндпоинты (REST + WS) с примерами запросов/ответов.
+4. Компоненты UI (дизайн-система).
+5. Экраны (React-компоненты) для MVP.
+6. Service Worker + manifest.
+7. Тесты (unit + e2e).
+8. CI/CD (GitHub Actions).
+9. Документацию (README, API docs, deployment guide).
+
+Начни с MVP: PWA-каркас, auth, онбординг, профиль персонажа, матчи 1v1,
+ELO, Daily Challenge, Academy (10 движений), Foos Coins, push-уведомления.
+
+Стиль кода: TypeScript strict, ESLint + Prettier, модульная архитектура,
+чистая логика, комментарии на русском для сложных мест.
+
+Приоритет: качество и работающий MVP важнее количества фич.
+
+
+================================================================================
+ПРИЛОЖЕНИЕ A. ПРИМЕР ELO-РАСЧЁТА
+================================================================================
+
+Игрок A: 1200 ELO, K=24
+Игрок B: 1400 ELO, K=24
+
+E_A = 1 / (1 + 10^((1400-1200)/400)) = 1 / (1 + 10^0.5) = 0.24
+E_B = 1 - 0.24 = 0.76
+
+A побеждает (S_A=1, S_B=0):
+R_A_new = 1200 + 24 * (1 - 0.24) = 1200 + 18.24 = 1218
+R_B_new = 1400 + 24 * (0 - 0.76) = 1400 - 18.24 = 1382
+
+
+================================================================================
+ПРИЛОЖЕНИЕ B. ПРИМЕР FOOS DNA
+================================================================================
+
+{
+  "archetype": "Trickster-одиночка",
+  "description": "Любишь нестандартные решения, часто используешь snake shot
+    и brush pass. Сильная сторона — левый фланг.",
+  "strengths": ["tricks", "control"],
+  "weaknesses": ["defense", "positioning"],
+  "recommended_lessons": ["defense_basics", "positioning_101"]
+}
+
+
+================================================================================
+ПРИЛОЖЕНИЕ C. ПРИМЕР КВЕСТА
+================================================================================
+
+{
+  "code": "daily_play_1",
+  "title": "Сыграй 1 матч",
+  "description": "Проведи хотя бы один матч сегодня",
+  "type": "daily",
+  "goal": 1,
+  "xp_reward": 30,
+  "coins_reward": 20
+}
+
+
+================================================================================
+ПРИЛОЖЕНИЕ D. ПРИМЕР УРОКА
+================================================================================
+
+{
+  "id": "lesson_snake_shot",
+  "branch": "tricks",
+  "level": "intermediate",
+  "title": "Snake Shot",
+  "description": "Обводящий удар с отскоком от борта",
+  "video_url": "https://cdn.foosrpg.app/lessons/snake_shot.mp4",
+  "steps": [
+    "Поставь мяч у левой стенки",
+    "Резко дёрни ручку на себя",
+    "Отпусти в момент контакта",
+    "Следи за отскоком от борта"
+  ],
+  "common_mistakes": [
+    "Слишком сильный замах",
+    "Поздний отпуск ручки",
+    "Неправильный угол атаки"
+  ],
+  "drill_id": "drill_snake_shot_50",
+  "xp_reward": 50,
+  "prerequisite_id": "lesson_basic_pass",
+  "is_legendary": false
+}
+
+
+================================================================================
+ПРИЛОЖЕНИЕ E. ПРИМЕР ДОСТИЖЕНИЯ
+================================================================================
+
+{
+  "code": "first_upset",
+  "title": "Апсет",
+  "description": "Победи игрока с рейтингом на 200+ выше",
+  "icon_url": "https://cdn.foosrpg.app/achievements/upset.png",
+  "category": "matches",
+  "xp_reward": 100,
+  "coins_reward": 50,
+  "is_secret": false
+}
+
+
+================================================================================
+КОНЕЦ ДОКУМЕНТА
+================================================================================
